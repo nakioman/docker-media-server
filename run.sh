@@ -1,22 +1,30 @@
 #!/bin/bash
 
-# 1. Create docker network
-docker network create webproxy
+# 1. Check if .env file exists
+if [ -e .env ]; then
+    source .env
+else 
+    echo "Please set up your .env file before starting your enviornment."
+    exit 1
+fi
+
+# 2. Create docker network
+docker network create ${NETWORK}
 
 # 2. Create local volumes
-docker volume create nginx_conf
-docker volume create nginx_certs
-docker volume create nginx_vhost
-docker volume create nginx_html
-docker volume create transmission_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/transmission --opt allow_other
-docker volume create transmission_watch --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/downloads/watch_torrents --opt allow_other
-docker volume create downloads --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/downloads --opt allow_other
-docker volume create sonarr_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/sonarr --opt allow_other
-docker volume create tvseries --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/tv --opt allow_other
-docker volume create portainer_data --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/portainer --opt allow_other
-docker volume create movies --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/movies --opt allow_other
-docker volume create couchpotato_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/couchpotato --opt allow_other
-docker volume create htpcmanager_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/htpcmanager --opt allow_other
+docker volume create ${VOLUME_NGINX_CONF} ${VOLUME_NGINX_CONF_CREATION_OPTIONS}
+docker volume create ${VOLUME_NGINX_VHOST} ${VOLUME_NGINX_VHOST_CREATION_OPTIONS}
+docker volume create ${VOLUME_NGINX_HTML} ${VOLUME_NGINX_HTML_CREATION_OPTIONS}
+docker volume create ${VOLUME_NGINX_CERTS} ${VOLUME_NGINX_CERTS_CREATION_OPTIONS}
+docker volume create ${VOLUME_TRANSMISSION_CONFIG} ${VOLUME_TRANSMISSION_CONFIG_CREATION_OPTIONS}
+docker volume create ${VOLUME_TRANSMISSION_WATCH} ${VOLUME_TRANSMISSION_WATCH_CREATION_OPTIONS}
+docker volume create ${VOLUME_SONARR_CONFIG} ${VOLUME_SONARR_CONFIG_CREATION_OPTIONS}
+docker volume create ${VOLUME_PORTAINER_DATA} ${VOLUME_PORTAINER_DATA_CREATION_OPTIONS}
+docker volume create ${VOLUME_COUCHPOTATO_CONFIG} ${VOLUME_COUCHPOTATO_CONFIG_CREATION_OPTIONS}
+docker volume create ${VOLUME_HTPCMANAGER_CONFIG} ${VOLUME_HTPCMANAGER_CONFIG_CREATION_OPTIONS}
+docker volume create ${VOLUME_DOWNLOADS} ${VOLUME_DOWNLOADS_CREATION_OPTIONS}
+docker volume create ${VOLUME_TVSERIES} ${VOLUME_TVSERIES_CREATION_OPTIONS}
+docker volume create ${VOLUME_MOVIES} ${VOLUME_MOVIES_CREATION_OPTIONS}
 
 # 2. Download the latest version of nginx.tmpl
 rm nginx.tmpl
