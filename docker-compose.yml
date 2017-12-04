@@ -87,8 +87,8 @@ services:
     environment:
       VIRTUAL_HOST: portainer.parmalen.com
       VIRTUAL_PORT: 9000
-      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
-      LETSENCRYPT_EMAIL: iglinsek@gmail.com
+#      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+#      LETSENCRYPT_EMAIL: iglinsek@gmail.com
   
   transmission:
     image: linuxserver/transmission
@@ -107,8 +107,8 @@ services:
       TZ: America/Buenos_Aires  
       VIRTUAL_HOST: torrents.parmalen.com
       VIRTUAL_PORT: 9091
-      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
-      LETSENCRYPT_EMAIL: iglinsek@gmail.com
+#      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+#      LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
   sonarr:
     image: linuxserver/sonarr
@@ -125,8 +125,8 @@ services:
       TZ: America/Buenos_Aires
       VIRTUAL_HOST: tv.parmalen.com
       VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
-      LETSENCRYPT_EMAIL: iglinsek@gmail.com
+#      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+#      LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
   couchpotato:
     image: linuxserver/couchpotato
@@ -142,6 +142,15 @@ services:
       TZ: America/Buenos_Aires
       VIRTUAL_HOST: movies.parmalen.com
       VIRTUAL_PORT: 5050
+#      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+#      LETSENCRYPT_EMAIL: iglinsek@gmail.com
+
+  landingsite:
+    image: nginx:alpine
+    container_name: landing_site
+    restart: always
+    environment:
+      VIRTUAL_HOST: parmalen.com,www.parmalen.com
       LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
       LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
