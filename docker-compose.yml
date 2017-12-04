@@ -27,6 +27,15 @@ volumes:
   tvseries:
     external:
         name: tvseries
+  portainer_data:
+    external:
+        name: portainer_data
+  movies:
+    external:
+        name: movies
+  couchpotato_config:
+    external:
+        name: couchpotato_config
 services:
   nginx:
     image: nginx:alpine
@@ -67,6 +76,19 @@ services:
     environment:
       NGINX_DOCKER_GEN_CONTAINER: nginx_gen
       NGINX_PROXY_CONTAINER: nginx_web
+
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    environment:
+      VIRTUAL_HOST: portainer.parmalen.com
+      VIRTUAL_PORT: 9000
+      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+      LETSENCRYPT_EMAIL: iglinsek@gmail.com
   
   transmission:
     image: linuxserver/transmission
@@ -83,17 +105,15 @@ services:
       PGID: 0
       PUID: 0
       TZ: America/Buenos_Aires  
-      VIRTUAL_HOST: parmalen.com,www.parmalen.com,torrents.parmalen.com
+      VIRTUAL_HOST: torrents.parmalen.com
       VIRTUAL_PORT: 9091
-      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,torrents.parmalen.com
+      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
       LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
     restart: always
-    ports:
-      - 8989:8989
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - sonarr_config:/config
@@ -103,9 +123,26 @@ services:
       PGID: 0
       PUID: 0
       TZ: America/Buenos_Aires
-      VIRTUAL_HOST: parmalen.com,www.parmalen.com,tv.parmalen.com
+      VIRTUAL_HOST: tv.parmalen.com
       VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,tv.parmalen.com
+      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
+      LETSENCRYPT_EMAIL: iglinsek@gmail.com
+
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    restart: always
+    volumes:
+      - couchpotato_config:/config
+      - downloads:/downloads
+      - movies:/movies
+    environment:
+      PGID: 0
+      PUID: 0
+      TZ: America/Buenos_Aires
+      VIRTUAL_HOST: movies.parmalen.com
+      VIRTUAL_PORT: 5050
+      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
       LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
 networks:
