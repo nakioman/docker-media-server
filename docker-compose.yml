@@ -36,6 +36,9 @@ volumes:
   couchpotato_config:
     external:
         name: couchpotato_config
+  htpcmanager_config:
+    external:
+        name: htpcmanager_config
 services:
   nginx:
     image: nginx:alpine
@@ -142,17 +145,20 @@ services:
       TZ: America/Buenos_Aires
       VIRTUAL_HOST: movies.parmalen.com
       VIRTUAL_PORT: 5050
-#      LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
-#      LETSENCRYPT_EMAIL: iglinsek@gmail.com
 
-  landingsite:
-    image: nginx:alpine
-    container_name: landing_site
-    restart: always
+  htpcmanager:
+    image: linuxserver/htpcmanager
+    container_name: htpcmanager
+    volumes:
+      - htpcmanager_config:/config
     environment:
       VIRTUAL_HOST: parmalen.com,www.parmalen.com
+      VIRTUAL_PORT: 8085
       LETSENCRYPT_HOST: parmalen.com,www.parmalen.com,portainer.parmalen.com,tv.parmalen.com,torrents.parmalen.com,movies.parmalen.com
       LETSENCRYPT_EMAIL: iglinsek@gmail.com
+      TZ: America/Buenos_Aires
+      PGID: 0
+      PUID: 0
 
 networks:
   default:

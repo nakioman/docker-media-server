@@ -16,6 +16,7 @@ docker volume create tvseries --driver vmhgfs:latest --opt sharedfolder=.host:/d
 docker volume create portainer_data --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/portainer --opt allow_other
 docker volume create movies --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/movies --opt allow_other
 docker volume create couchpotato_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/couchpotato --opt allow_other
+docker volume create htpcmanager_config --driver vmhgfs:latest --opt sharedfolder=.host:/downloads/Docker/volumes/htpcmanager --opt allow_other
 
 # 2. Download the latest version of nginx.tmpl
 rm nginx.tmpl
